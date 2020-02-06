@@ -1,0 +1,19 @@
+dist: bionic
+language: python
+python: '3.7'
+addons:
+  apt:
+    update: true
+before_install:
+  - openssl aes-256-cbc -K $encrypted_db2fa23e6ada_key -iv $encrypted_db2fa23e6ada_iv
+    -in id_rsa.enc -out .keys/id_rsa -d
+  - GIT_SSH_COMMAND='ssh -i .keys/id_rsa' git clone --depth=1 $REPO script
+install:
+  - sudo apt install -y chromium-chromedriver
+  - pip --no-color install ./script
+script:
+  - PYTHONPATH=script/src python3 -mmintoslb.mintos mintos_loans.pkl.zip
+after_script:
+  - curl -X POST -T mintos_loans.pkl.zip $BTX https://api.bintray.com/content/mintos-fellows/loan-book/loan_book/$(date "+%Y.%m.%d")/loan_book.zip
+deploy:
+  skip_cleanup: true

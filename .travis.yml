@@ -7,6 +7,7 @@ addons:
 before_install:
   - openssl aes-256-cbc -K $encrypted_db2fa23e6ada_key -iv $encrypted_db2fa23e6ada_iv
     -in id_rsa.enc -out .keys/id_rsa -d
+  - chmod 0400 .keys/id_rsa
   - GIT_SSH_COMMAND='ssh -i .keys/id_rsa' git clone --depth=1 $REPO script
 install:
   - sudo apt install -y chromium-chromedriver

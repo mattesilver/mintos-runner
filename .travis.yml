@@ -10,8 +10,8 @@ before_install:
   - chmod 0400 .keys/id_rsa
   - GIT_SSH_COMMAND='ssh -i .keys/id_rsa' git clone --depth=1 $REPO script
 install:
-  - sudo apt install -y chromium-chromedriver
   - pip --no-color install ./script
+  - sudo apt install -y chromium-chromedriver
 script:
   - PYTHONPATH=script/src python3 -mmintoslb.mintos mintos_loans.pkl.zip
 after_script:
